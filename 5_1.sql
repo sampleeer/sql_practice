@@ -60,15 +60,15 @@ CREATE TABLE Appointment_G (
 
 -- EDGE 
 
-CREATE TABLE [Принадлежит] AS EDGE
-CREATE TABLE [Составил] AS EDGE
--- CREATE TABLE [Работает] AS EDGE
--- DROP TABLE [Работает];
-CREATE TABLE [Распределение] AS EDGE
-CREATE TABLE [Провёл] AS EDGE
-CREATE TABLE [Пришёл] AS EDGE
-CREATE TABLE [Проживает] AS EDGE
-CREATE TABLE [Находится] AS EDGE
+CREATE TABLE [ГЏГ°ГЁГ­Г Г¤Г«ГҐГ¦ГЁГІ] AS EDGE
+CREATE TABLE [Г‘Г®Г±ГІГ ГўГЁГ«] AS EDGE
+-- CREATE TABLE [ГђГ ГЎГ®ГІГ ГҐГІ] AS EDGE
+-- DROP TABLE [ГђГ ГЎГ®ГІГ ГҐГІ];
+CREATE TABLE [ГђГ Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГҐ] AS EDGE
+CREATE TABLE [ГЏГ°Г®ГўВёГ«] AS EDGE
+CREATE TABLE [ГЏГ°ГЁГёВёГ«] AS EDGE
+CREATE TABLE [ГЏГ°Г®Г¦ГЁГўГ ГҐГІ] AS EDGE
+CREATE TABLE [ГЌГ ГµГ®Г¤ГЁГІГ±Гї] AS EDGE
 
 -- insert
 
@@ -107,31 +107,31 @@ SELECT * FROM Appointment_G
 --INSERT  
 --INTO EDGES 
 
-INSERT INTO [Принадлежит] ( $from_id, $to_id )
+INSERT INTO [ГЏГ°ГЁГ­Г Г¤Г«ГҐГ¦ГЁГІ] ( $from_id, $to_id )
 SELECT sg.$node_id, tg.$node_id
 FROM Ticket AS t
 JOIN Schedule AS s ON t.ScheduleID = s.ID
 JOIN Schedule_G AS sg ON sg.ID = s.ID
 JOIN Ticket_G AS tg ON tg.ID = t.ID;
-SELECT $from_id, $to_id FROM [Принадлежит] 
+SELECT $from_id, $to_id FROM [ГЏГ°ГЁГ­Г Г¤Г«ГҐГ¦ГЁГІ] 
 
-INSERT INTO [Составил] ( $from_id, $to_id )
+INSERT INTO [Г‘Г®Г±ГІГ ГўГЁГ«] ( $from_id, $to_id )
 SELECT dg.$node_id, sg.$node_id
 FROM Doctor AS d
 JOIN Schedule AS s ON d.ID = s.Doctor
 JOIN Schedule_G AS sg ON sg.ID = s.ID
 JOIN Doctor_G AS dg ON dg.ID = d.ID;
-SELECT $from_id, $to_id FROM [Составил] 
+SELECT $from_id, $to_id FROM [Г‘Г®Г±ГІГ ГўГЁГ«] 
 
 
-INSERT INTO [Пришёл] ( $from_id, $to_id )
+INSERT INTO [ГЏГ°ГЁГёВёГ«] ( $from_id, $to_id )
 SELECT pg.$node_id, ag.$node_id
 FROM Patient AS p
 JOIN Appointment AS a ON p.[Number of Policy] = a.[Policy of Patient]
 JOIN Appointment_G AS ag ON ag.ID = a.ID
 JOIN Patient_G AS pg ON pg.[Number of Policy] = p.[Number of Policy];
 
-INSERT INTO [Распределение] ( $from_id, $to_id )
+INSERT INTO [ГђГ Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГҐ] ( $from_id, $to_id )
 SELECT dg.$node_id, sg.$node_id
 FROM Doctor AS d
 JOIN Station AS s ON d.ID = s.Doctor
@@ -140,7 +140,7 @@ JOIN Doctor_G AS dg ON dg.ID = d.ID;
 
 
 
-INSERT INTO [Провёл] ( $from_id, $to_id )
+INSERT INTO [ГЏГ°Г®ГўВёГ«] ( $from_id, $to_id )
 SELECT dg.$node_id, ag.$node_id
 FROM Doctor AS d
 JOIN Appointment AS a ON d.ID = a.DoctorID
@@ -150,7 +150,7 @@ JOIN Appointment_G AS ag ON ag.ID = a.ID;
 
 
 
-INSERT INTO [Проживает] ( $from_id, $to_id )
+INSERT INTO [ГЏГ°Г®Г¦ГЁГўГ ГҐГІ] ( $from_id, $to_id )
 SELECT pg.$node_id, ag.$node_id
 FROM Patient AS p
 JOIN [Address] AS a ON p.[Address] = a.ID
@@ -159,14 +159,14 @@ JOIN Address_G AS ag ON ag.ID = a.ID;
 
 
 
-INSERT INTO [Находится] ( $from_id, $to_id )
+INSERT INTO [ГЌГ ГµГ®Г¤ГЁГІГ±Гї] ( $from_id, $to_id )
 SELECT ag.$node_id, sg.$node_id
 FROM [Address] AS a
 JOIN Station AS s ON a.[Station] = s.ID
 JOIN Address_G AS ag ON ag.ID = a.ID
 JOIN Station_G AS sg ON sg.ID = s.ID;
 
-SELECT $from_id, $to_id FROM [Содержит] 
+SELECT $from_id, $to_id FROM [Г‘Г®Г¤ГҐГ°Г¦ГЁГІ] 
 
 
 

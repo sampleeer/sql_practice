@@ -45,6 +45,7 @@ WHERE Schedule.`Event Day` = DAYNAME(CURDATE());
   
 -- d) Подсчитать количество посещений с диагнозом «ОРВИ» 
 -- с начала текущего года с разбивкой по возрастам: от 14 до 18 лет, от 19 д 45, от 46 до 65, от 66
+-- плохой вариант 
 WITH Age_14_18 AS (
 SELECT Patient.`Number of Policy`, Appointment.`Diagnosis`, "14-18" AS `Age group`
 FROM Patient RIGHT JOIN Appointment ON Patient.`Number of Policy` = Appointment.`Policy of Patient`
@@ -74,7 +75,7 @@ FROM Patient RIGHT JOIN Appointment ON Patient.`Number of Policy` = Appointment.
      GROUP BY NEW_GROUPS.`Age group`, NEW_GROUPS.`Diagnosis`;
      
 -- сумму от каждого case 
-
+-- правильный вариант
 SELECT
   SUM(CASE WHEN Patient.Age BETWEEN 14 AND 18 THEN 1 ELSE 0 END) AS "14-18",
   SUM(CASE WHEN Patient.Age BETWEEN 19 AND 45 THEN 1 ELSE 0 END) AS "19-45",
@@ -88,7 +89,7 @@ WHERE Appointment.`Diagnosis` = 'ОРВИ' AND YEAR(Appointment.`Date`) = YEAR(C
 -- тех лет, которых нет, тоже 0 
 -- e) Вывести количество посещений для каждого участка на заданную дату
 -- выводить 0, по категориям которых нет 
--- Error Code: 1054. Unknown column 'Appointment.Date' in 'having clause'
+
 
 SELECT Address.District, COUNT(Appointment.`Policy of Patient`) AS VisitsCount
 FROM Address
@@ -96,6 +97,9 @@ LEFT JOIN Patient ON Address.ID = Patient.Address
 LEFT JOIN Appointment ON Patient.`Number of Policy` = Appointment.`Policy of Patient`  and Appointment.Date = "2024-01-10"
 GROUP BY Address.District ;
 
+
+
+-- просто проверка хззачем
 select Address.District, COUNT(visits.ai) as counts from Address left join ( 
 select Address.ID as a, Appointment.ID as ai
 FROM Address
